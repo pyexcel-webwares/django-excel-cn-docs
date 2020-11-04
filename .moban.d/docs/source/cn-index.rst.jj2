@@ -234,36 +234,30 @@ and http://localhost:8000/polls/embedded_handson_view_single/.
 如何输入单个表格呢
 ********************************************************************************
 
-前面讲了如何把一个多表格的 excel 文件里的数据输入数据库。 现在我们看看输入一个。
+我们开始之前，请用 django 的管理员界面，清空 question 和 choice 。
 
-不过在我们开始之前，请用 django 的管理员界面，清空 question 和 choice 。
+前面讲了如何把一个多表格的 excel 文件里的数据输入数据库。 现在我们看看输入一个表格。
+打开这个链接：http://localhost:8000/polls/imports_sheet/, w
+这次上传 `sample-sheet.xls <https://github.com/pyexcel/django-excel/blob/master/sample-sheet.xls>`_
+然后 django 管理员界面可以查看是否有收到数据。
 
-Let's visit this url first http://localhost:8000/polls/imports_sheet/, where you
-see a similar file upload form. This time please choose
-`sample-sheet.xls <https://github.com/pyexcel/django-excel/blob/master/sample-sheet.xls>`_
-instead. Then look at django admin and see if the question data have been
-imported or not.
-
-Now let's look at the code:
+下面我们来读代码：
 
 .. literalinclude:: ../../polls/views.py
    :lines: 104-116
 
-Because it is a single sheet, the function to call is
-:meth:`~django_excel.ExcelMixin.save_to_database` where you specify a model and
-its mapping dictionary.
+因为是单个表格，所以我们给一个 mapdict 参数并调用
+:meth:`~django_excel.ExcelMixin.save_to_database` 来存到一个 django 模型里。
 
-Have you noticed the extra parameter 'name_columns_by_row'? Why is this needed?
-Well, normally you *will not need* that if you have column names in the first row.
-In this example, the column names appears in the second row. Please open
+看到了多了一个参数 'name_columns_by_row' 吗？为什么需要它？
+是这样的，一般来讲，如果你的表格的第一行是栏目名字呢，你就不需要它。 
+在这个示例里， 栏目名故意放在了第二行。你可以打开
 `sample-sheet.xls <https://github.com/pyexcel/django-excel/blob/master/sample-sheet.xls>`_
-and have a look. The straight answer is because the column names in the data
-appears in the 2nd row of the data matrix.
+查看一下。
 
 .. note::
 
-   If you have imported earlier excel sheet "sample-data.xls", you will get the
-   following warning in your console output::
+   如果你忘了清空数据的话呢，你会得到一下的错误输出::
 
        Warning: Bulk insertion got below exception. Trying to do it one by one slowly.
        column slug is not unique <- reason
@@ -275,25 +269,23 @@ appears in the 2nd row of the data matrix.
        What is your favourite IDE?
 
 
-   This is because question data have been imported before. Django is raising
-   IntegrityError. For more details please read
-   `this part of code in pyexcel-io <https://github.com/pyexcel/pyexcel-io/blob/master/pyexcel_io/djangobook.py#L98>`_,
-   and `django-excel issue 2 <https://github.com/pyexcel/django-excel/issues/2>`_
+   这是因为数据库里已经有相同数据了，Django 就会报 IntegrityError. 具体请读
+   `这部分 pyexcel-io 的代码 <https://github.com/pyexcel/pyexcel-io/blob/master/pyexcel_io/djangobook.py#L98>`_,
+   和 `django-excel 问题 2 <https://github.com/pyexcel/django-excel/issues/2>`_
 
-   In order to remove those warnings, what you can do is to empty all data using
-   django admin and redo this single sheet import again.
+   为了除去这个警告呢，你需要在 django 的管理员界面清空所有数据。然后再试一下。
 
 
-What to do if import data overlaps existing data in the database
+如果 excel 数据里有一些与数据库数据重叠了，怎么办？
 ********************************************************************************
 
-With new version pyexcel-io v0.1.0, you could provide the row initialization
-function that returns None in order to skip a row in your import data. Inside
-the initialization function, you could also do database update. As long as it
-returns None, django-excel will try to do bulk create the import data.
+你可以提供自己的一个初始化函数。这个数在遇到重叠的数据的时候，返回 None 这样 django-excel 
+就会跳过当前的一行数据。
+当然，在初始化函数里，你也可以更新数据库。最重要的是，只有你的初始化函数返回 None，
+django-excel 会尽量用批量输入，而不是一个一个输入数据库。
 
 
-Handle custom data export
+处理自定义数据输出
 +++++++++++++++++++++++++++++++
 
 It is also quite common to download a portion of the data in a database table,
