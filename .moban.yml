@@ -1,0 +1,19 @@
+configuration:
+  configuration_dir: "git://github.com/pyexcel/pyexcel-mobans!/config"
+  template_dir:
+  - "git://github.com/moremoban/pypi-mobans.git?submodule=true&branch=dev!/statics"
+  - "git://github.com/moremoban/pypi-mobans.git?branch=dev&submodule=true!/templates"
+  - "git://github.com/pyexcel/pyexcel-mobans.git!/templates"
+  - "git://github.com/pyexcel/pyexcel-mobans.git!/statics"
+  - "git://github.com/pyexcel-webwares/django-excel.git?branch=master!/"
+  - ".moban.d"
+  configuration: "git://github.com/pyexcel-webwares/django-excel.git?branch=master!/django_excel.yml"
+targets:
+  - output: docs/source
+    template_type: copy
+    template: "docs/source/**"
+  - delete!: docs/source/index.rst
+  - "docs/source/index.rst": "docs/source/cn-index.rst.jj2"
+  - "polls/views.py": "polls/views.py"
+  - "sample-data.xls": "sample-data.xls"
+
