@@ -9,9 +9,9 @@ configuration:
   - ".moban.d"
   configuration: "git://github.com/pyexcel-webwares/django-excel.git?branch=master!/django_excel.yml"
 targets:
-  - output: docs/source
+  - output: docs
     template_type: copy
-    template: "docs/source/**"
+    template: "docs/**"
   - delete!: docs/source/index.rst
   - "docs/source/index.rst": "docs/source/cn-index.rst.jj2"
   - "polls/views.py": "polls/views.py"
