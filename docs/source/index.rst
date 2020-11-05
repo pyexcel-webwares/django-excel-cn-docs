@@ -489,38 +489,34 @@ django-excel 会尽量用批量输入，而不是一个一个输入数据库。
 处理自定义数据输出
 +++++++++++++++++++++++++++++++
 
-It is also quite common to download a portion of the data in a database table,
-for example the result of a search query. With version 0.0.2, you can pass on a
-query sets to to :meth:`~django_excel.make_response_from_query_sets` and generate
-an excel sheet from it:
+有时候，应用户要求呢，我们会下载数据库表的一部分。这个时候，作为开发人员，你可以用
+:meth:`~django_excel.make_response_from_query_sets` 来产生一个 excel 文件:
 
 .. literalinclude:: ../../polls/views.py
    :lines: 49, 56-65
 
-You can visit http://localhost:8000/polls/export/custom and will get the query
-set exported as a single sheet file as:
+你可以打开 http://localhost:8000/polls/export/custom 试试看看：
 
 .. image:: custom-export.png
 
 
-Visualize your data
+渲染你的数据
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-Let's go to the admin page and update some votes for the choices.
+为了渲染数据，我们先去 django 的管理员界面，增加一些投票。
 
 .. image:: admin-vote.png
 
-In my case, I have updated all of them and have gotten something like this:
+看看，这个是我改的：
 
 .. image:: votes-handson-table.png
 
-Now, let's look at the survey result(http://localhost:8000/polls/survey_result/)
-for "What's your favorite IDE?":
+现在，我们来看看这个问卷调查的结果(http://localhost:8000/polls/survey_result/)
+"What's your favorite IDE?":
 
 .. image:: survey-result.png
 
-`pyexcel-pygal`_ provide you the common data visualization capability to show
-your data intuitively. Here is the code to achieve that:
+`pyexcel-pygal`_ 是 pyexcel 的一个插件，可以用来展示一些常用图表。下面是所需要的代码：
 
 .. literalinclude:: ../../polls/views.py
    :lines: 192-217
@@ -534,23 +530,24 @@ your data intuitively. Here is the code to achieve that:
 示例应用展示了数列，并不代表只有数列，其他的数据结构也是支持的。 以下是所有的数据结构列表:
 
 
-=========================== ======================================================== ===================================================
-data structure              from file to data structures                             from data structures to response
-=========================== ======================================================== ===================================================
-dict                        :meth:`~django_excel.ExcelMixin.get_dict`                :meth:`~django_excel.make_response_from_dict`
-records                     :meth:`~django_excel.ExcelMixin.get_records`             :meth:`~django_excel.make_response_from_records`
-a list of lists             :meth:`~django_excel.ExcelMixin.get_array`               :meth:`~django_excel.make_response_from_array`
-dict of a list of lists     :meth:`~django_excel.ExcelMixin.get_book_dict`           :meth:`~django_excel.make_response_from_book_dict`
-:class:`pyexcel.Sheet`      :meth:`~django_excel.ExcelMixin.get_sheet`               :meth:`~django_excel.make_response`
-:class:`pyexcel.Book`       :meth:`~django_excel.ExcelMixin.get_book`                :meth:`~django_excel.make_response`
-database table              :meth:`~django_excel.ExcelMixin.save_to_database`        :meth:`~django_excel.make_response_from_a_table`
-                            :meth:`~django_excel.ExcelMixin.isave_to_database`
-a list of database tables   :meth:`~django_excel.ExcelMixin.save_book_to_database`   :meth:`~django_excel.make_response_from_tables`
-                            :meth:`~django_excel.ExcelMixin.isave_book_to_database`
-a database query sets                                                                :meth:`~django_excel.make_response_from_query_sets`
-a generator for records     :meth:`~django_excel.ExcelMixin.iget_records`
-a generator of lists        :meth:`~django_excel.ExcelMixin.iget_array`
-=========================== ======================================================== ===================================================
+============================================== ======================================================== ===================================================
+数据结构                                          从文件到数据结构                                           从数据结构到 http 回复
+============================================== ======================================================== ===================================================
+字典(dict)                                      :meth:`~django_excel.ExcelMixin.get_dict`                :meth:`~django_excel.make_response_from_dict`
+字典列表（records)                               :meth:`~django_excel.ExcelMixin.get_records`             :meth:`~django_excel.make_response_from_records`
+二维数组（a list of lists）                      :meth:`~django_excel.ExcelMixin.get_array`               :meth:`~django_excel.make_response_from_array`
+以二维数组为值的字典(dict of a list of lists)     :meth:`~django_excel.ExcelMixin.get_book_dict`           :meth:`~django_excel.make_response_from_book_dict`
+:class:`pyexcel.Sheet`                         :meth:`~django_excel.ExcelMixin.get_sheet`               :meth:`~django_excel.make_response`
+:class:`pyexcel.Book`                          :meth:`~django_excel.ExcelMixin.get_book`                :meth:`~django_excel.make_response`
+数据库表(database table)                       :meth:`~django_excel.ExcelMixin.save_to_database`         :meth:`~django_excel.make_response_from_a_table`
+                                               :meth:`~django_excel.ExcelMixin.isave_to_database`
+一组数据库表(a list of database tables)        :meth:`~django_excel.ExcelMixin.save_book_to_database`    :meth:`~django_excel.make_response_from_tables`
+                                               :meth:`~django_excel.ExcelMixin.isave_book_to_database`
+数据库查询（a database query sets）                                                                       :meth:`~django_excel.make_response_from_query_sets`
+字典产生器（a generator for records）            :meth:`~django_excel.ExcelMixin.iget_records`
+数组产生器（a generator of lists）               :meth:`~django_excel.ExcelMixin.iget_array`
+============================================== ======================================================== ===================================================
+
 
 需要更多信息的话，可以参照 :ref:`pyexcel documentation<pyexcel:a-list-of-data-structures>`
 
