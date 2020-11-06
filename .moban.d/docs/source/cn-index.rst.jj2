@@ -3,10 +3,11 @@
 {% block further_dissertation %}
 既然有了 pyexcel , 为什么我还要装 django-excel ？
 
-#. **加快上传文件处理速度**.  **django-excel** 通过 ExcelMemoryFileUploadHandler 和
-   TemporaryExcelFileUploadHandler 让你直接处理上传的文件。
-   ExcelemoryFileUploadHandler 把上传的文件存在内存里，这样呢 django-excel 可以直接从内
-   存读取上传文件。 TemporaryExcelFileUploadHandler 呢，是把上传文件存在临时文件中，
+#. **加快上传文件处理速度**.  **django-excel** 通过
+   :class:`~django_excel.ExcelMemoryFileUploadHandler` 和
+   :class:`~django_excel.TemporaryExcelFileUploadHandler` 让你直接处理上传的文件。
+   `ExcelemoryFileUploadHandler` 把上传的文件存在内存里，这样呢 django-excel 可以直接从内
+   存读取上传文件。 `TemporaryExcelFileUploadHandler` 呢，是把上传文件存在临时文件中，
    django-excel 则是直接读临时文件。到底是哪个类被 Django 调用呢？
    是由 FILE_UPLOAD_MAX_MEMORY_SIZE 决定的。如果上传文件小于这个最大值，
    那么 Django 会把上传文件存在内存里。否则，就存在临时文件里。
@@ -381,74 +382,74 @@ django-excel 会尽量用批量输入，而不是一个一个输入数据库。
    :param sheet_name: 和前面 :meth:`~django_excel.ExcelMixin.get_sheet` 一样。
    :param name_columns_by_row: uses the first row of the sheet to be column headers by default.
    :param keywords: additional keywords to pyexcel library
-   :returns: a dictionary of the file content
+   :returns: 字典
 
 .. method:: get_records(sheet_name=None, name_columns_by_row=0, **keywords)
 
    :param sheet_name: 和前面 :meth:`~django_excel.ExcelMixin.get_sheet` 一样。
    :param name_columns_by_row: uses the first row of the sheet to be record field names by default.
-   :param keywords: additional keywords to pyexcel library
-   :returns: a list of dictionary of the file content
+   :param keywords: 其他 :meth:`pyexcel.get_records` 的参数
+   :returns: 字典列表 (a list of records)
 
 .. method:: iget_records(sheet_name=None, name_columns_by_row=0, **keywords)
 
    :param sheet_name: 和前面 :meth:`~django_excel.ExcelMixin.get_sheet` 一样。
    :param name_columns_by_row: uses the first row of the sheet to be record field names by default.
-   :param keywords: additional keywords to pyexcel library
-   :returns: a generator for a list of dictionary of the file content
+   :param keywords: 其他 :meth:`pyexcel.iget_records` 的参数
+   :returns: 字典产生器（a generator for records）
 
 .. method:: get_book(**keywords)
 
-   :param keywords: additional keywords to pyexcel library
-   :returns: a two dimensional array, a list of lists
+   :param keywords: 其他 :meth:`pyexcel.get_book` 的参数
+   :returns: :class:`pyexcel.Book`
 
 .. method:: get_book_dict(**keywords)
 
-   :param keywords: additional keywords to pyexcel library
-   :returns: a two dimensional array, a list of lists
+   :param keywords: 其他 :meth:`pyexcel.get_book_dict` 的参数
+   :returns: 以二维数组为值的字典(dict of a list of lists) 
 
 .. method:: save_to_database(model=None, initializer=None, mapdict=None, **keywords)
 
-   :param model: a django model
-   :param initializer: a custom table initialization function if you have one
-   :param mapdict: the explicit table column names if your excel data do not have the exact column names
-   :param keywords: additional keywords to :meth:`pyexcel.Sheet.save_to_django_model`
+   :param model: Django 模型
+   :param initializer: 自定义的初始化函数
+   :param mapdict: 表栏目适配字典
+   :param keywords: 参照 :meth:`pyexcel.Sheet.save_to_django_model`
 
 .. method:: isave_to_database(model=None, initializer=None, mapdict=None, **keywords)
 
-   similar to :meth:`~django_excel.ExcelMixin.save_to_database`. But it requires
-   less memory.
+   和 :meth:`~django_excel.ExcelMixin.save_to_database` 一样但需要更少内存
 
-   This requires column names must be at the first row.
+   同时要求上传文件的第一行是栏目名。
 
 .. method:: save_book_to_database(models=None, initializers=None, mapdicts=None, **keywords)
 
-   :param models: a list of django models
-   :param initializers: a list of model initialization functions.
-   :param mapdicts: a list of explicit table column names if your excel data sheets do not have the exact column names
-   :param keywords: additional keywords to :meth:`pyexcel.Book.save_to_django_models`
+   :param models: Django 模型数组
+   :param initializers: 自定义的初始化函数组
+   :param mapdicts: 表栏目适配字典组
+   :param keywords: 参照 :meth:`pyexcel.Book.save_to_django_models`
+
+   此函数与 :meth:`~django_excel.save_to_database` 类似，只不过是单数边多数而已。
 
 .. method:: isave_book_to_database(models=None, initializers=None, mapdicts=None, **keywords)
 
-   similar to :meth:`~django_excel.ExcelMixin.save_book_to_database`. But it requires
-   less memory.
+   和 :meth:`~django_excel.ExcelMixin.save_book_to_database` 一样，但需要更少内存。
 
-   This requires column names must be at the first row in each sheets.
+   同时要求上传文件的所有表的第一行是栏目名。
 
 .. method:: free_resources()
 
-   It should be called after iget_array and iget_records were used
+   如果用了 `iget_array` 和 `iget_reords`, 这个需要调用
 
 
-Response methods
+回复函数
 -----------------
 
 .. module:: django_excel
 
 .. method:: make_response(pyexcel_instance, file_type, status=200)
 
-   :param pyexcel_instance: :class:`pyexcel.Sheet` or :class:`pyexcel.Book`
-   :param file_type: one of the following strings:
+   :param pyexcel_instance: :class:`pyexcel.Sheet` 或 :class:`pyexcel.Book`
+   :param file_type: 任何一个支持的文件类型，以下是可用的但不局限于它们的集合
 
                      * 'csv'
                      * 'tsv'
@@ -459,57 +460,55 @@ Response methods
                      * 'xlsm'
                      * 'ods'
 
-   :param status: unless a different status is to be returned.
+   :param status: 允许开发人员发自定义的 http status
 
 .. method:: make_response_from_array(array, file_type, status=200)
 
-   :param array: a list of lists
-   :param file_type: same as :meth:`~django_excel.make_response`
-   :param status: same as :meth:`~django_excel.make_response`
+   :param array: 二维数组（a list of lists）
+   :param file_type: 和 :meth:`~django_excel.make_response` 一样
+   :param status: 和 :meth:`~django_excel.make_response` 一样
 
 .. method:: make_response_from_dict(dict, file_type, status=200)
 
    :param dict: a dictionary of lists
-   :param file_type: same as :meth:`~django_excel.make_response`
-   :param status: same as :meth:`~django_excel.make_response`
+   :param file_type:和 :meth:`~django_excel.make_response` 一样
+   :param status: 和 :meth:`~django_excel.make_response` 一样
 
 .. method:: make_response_from_records(records, file_type, status=200)
 
-   :param records: a list of dictionaries
-   :param file_type: same as :meth:`~django_excel.make_response`
-   :param status: same as :meth:`~django_excel.make_response`
+   :param records: 字典列表（records)  
+   :param file_type: 和 :meth:`~django_excel.make_response` 一样
+   :param status: 和 :meth:`~django_excel.make_response` 一样
 
 
 .. method:: make_response_from_book_dict(book_dict, file_type, status=200)
 
-   :param book_dict: a dictionary of two dimensional arrays
-   :param file_type: same as :meth:`~django_excel.make_response`
-   :param status: same as :meth:`~django_excel.make_response`
+   :param book_dict: 以二维数组为值的字典(a dictionary of two dimensional arrays）
+   :param file_type: 和 :meth:`~django_excel.make_response` 一样
+   :param status: 和 :meth:`~django_excel.make_response` 一样
 
 .. method:: make_response_from_a_table(model, file_type status=200)
    Produce a single sheet Excel book of *file_type*
 
-   :param model: a Django model
-   :param file_type: same as :meth:`~django_excel.make_response`
-   :param status: same as :meth:`~django_excel.make_response`
+   :param model: 一个 Django 模型
+   :param file_type: 和 :meth:`~django_excel.make_response` 一样
+   :param status: 和 :meth:`~django_excel.make_response` 一样
 
 .. method:: make_response_from_query_sets(query_sets, column_names, file_type status=200)
 
-   Produce a single sheet Excel book of *file_type* from your custom database queries
+   由询问结果产生 *file_type* 类的 Excel 文件
 
-   :param query_sets: a query set
+   :param query_sets: 询问结果
    :param column_names: a nominated column names. It could not be None, otherwise no data is returned.
-   :param file_type: same as :meth:`~django_excel.make_response`
-   :param status: same as :meth:`~django_excel.make_response`
+   :param file_type: 和 :meth:`~django_excel.make_response` 一样
+   :param status: 和 :meth:`~django_excel.make_response` 一样
 
 .. method:: make_response_from_tables(models, file_type status=200)
 
-   Produce a multiple sheet Excel book of *file_type*. It becomes the same
-   as :meth:`~django_excel.make_response_from_a_table` if you pass *tables*
-   with an array that has a single table
+   产生一个多页的 Excel 文件。和 :meth:`~django_excel.make_response_from_a_table` 类似。
 
-   :param models: a list of Django models
-   :param file_type: same as :meth:`~django_excel.make_response`
-   :param status: same as :meth:`~django_excel.make_response`
+   :param models: Django 模型组
+   :param file_type: 和 :meth:`~django_excel.make_response` 一样
+   :param status: 和 :meth:`~django_excel.make_response` 一样
 
 {%endblock%}
