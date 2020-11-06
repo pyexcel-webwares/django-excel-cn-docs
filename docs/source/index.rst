@@ -564,7 +564,7 @@ django-excel 会尽量用批量输入，而不是一个一个输入数据库。
 如果您觉得作者的付出对您有帮助，您可以给作者小女儿送个小玩具。谢谢您的支持！
 
 .. image:: https://user-images.githubusercontent.com/4280312/98422397-70c9a580-2083-11eb-969b-8c1b792a86d4.png
-   :width: 400
+   :width: 200
 函数参考
 ---------------
 
