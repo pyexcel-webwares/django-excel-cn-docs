@@ -170,13 +170,16 @@ python 版本，请继续使用 0.5.x 。
 
 既然有了 pyexcel , 为什么我还要装 django-excel ？
 
-#. **加快上传文件处理速度**.  **django-excel** 通过 ExcelMemoryFileUploadHandler 和 TemporaryExcelFileU
-   ploadHandler 让你直接处理上传的文件。 MemoryFileUploadHandler 把上传的文件存在内存里，这样呢 django-excel
-   可以直接从内存读取上传文件。 TemporaryExcelFileUploadHandler 呢，是把上传文件存在临时文件中，django-excel
-   则是直接读临时文件。到底是哪个类被 Django 调用呢？是有 FILE_UPLOAD_MAX_MEMORY_SIZE 决定的。如果上传
-   文件小于这个最大值，那么 django 会把上传文件存在内存里。否则，就存在临时文件里。
+#. **加快上传文件处理速度**.  **django-excel** 通过 ExcelMemoryFileUploadHandler 和
+   TemporaryExcelFileUploadHandler 让你直接处理上传的文件。
+   ExcelemoryFileUploadHandler 把上传的文件存在内存里，这样呢 django-excel 可以直接从内
+   存读取上传文件。 TemporaryExcelFileUploadHandler 呢，是把上传文件存在临时文件中，
+   django-excel 则是直接读临时文件。到底是哪个类被 Django 调用呢？
+   是由 FILE_UPLOAD_MAX_MEMORY_SIZE 决定的。如果上传文件小于这个最大值，
+   那么 Django 会把上传文件存在内存里。否则，就存在临时文件里。
 
-#. **直接把上传数据存入数据库**. **django-excel** 用批量方式（ bulk_insert ）把你的数据导入你的 django model.
+#. **直接把上传数据存入数据库**. **django-excel** 用批量方式（ bulk_insert ）
+   把你的数据导入你的 Django model.
 
 
 安装
@@ -202,8 +205,8 @@ python 版本，请继续使用 0.5.x 。
 
         $ pip install pyexcel-xlsx
 
-一反 Django 开箱即用的理念，django-excel 需要开发人员自己选择所需 pyexcel 的套件。主要原因是，
-第三方软件 xlwt, openpyxl, odfpy 也是会拉长下载速度和占用磁盘空间。
+一反 Django 开箱即用的理念，django-excel 需要开发人员自己选择所需 pyexcel 的套件。
+主要原因是，第三方软件 xlwt, openpyxl, odfpy 也是会拉长下载速度和占用磁盘空间。
 
 配置
 ------------------------
@@ -245,7 +248,8 @@ You will need to update your *settings.py*:
 
     git clone https://github.com/pyexcel/django-excel.git
 
-整个测试项目是按照 Django 的指南的第 `一 <https://docs.djangoproject.com/en/1.11/intro/tutorial01/>`_,
+整个测试项目是按照 Django 的指南的第
+`一 <https://docs.djangoproject.com/en/1.11/intro/tutorial01/>`_,
 `二 <https://docs.djangoproject.com/en/1.11/intro/tutorial02/>`_，
 `三 <https://docs.djangoproject.com/en/1.11/intro/tutorial03/>`_ 部分写的。
 所以，作者就不最述了。如果大家想自己从零开始呢，请移步到 Django 指南，做完第三部分，再回来。
@@ -297,7 +301,7 @@ http://localhost:8000/polls/, 你应该可以看到下面这个上传表格：
    :lines: 14-36
 
 
-**UploadFileForm** 是 django 的一个文件上传模块。然后往下看 **filehandle**.
+**UploadFileForm** 是 Django 的一个文件上传模块。然后往下看 **filehandle**.
 它可能是 ExcelInMemoryUploadedFile
 或是 TemporaryUploadedExcelFile。它们两个都继承了 ExcelMixin， 所以它们都又有
 以下的函数，比如 get_sheet, get_array 。
@@ -313,8 +317,8 @@ http://localhost:8000/polls/, 你应该可以看到下面这个上传表格：
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 这个例子展示如何把上传的 excel 的内容直接输入数据库。
-`sample-data.xls <https://github.com/pyexcel/django-excel/blob/master/sample-data.xls>`_ 是我们
-样上传的文件。
+`sample-data.xls <https://github.com/pyexcel/django-excel/blob/master/sample-data.xls>`_
+是我们要上传的文件。
 
 .. pyexcel-table:: ../../sample-data.xls
 
@@ -358,14 +362,15 @@ http://localhost:8000/polls/, 你应该可以看到下面这个上传表格：
 
     你可以用管理员界面不数据都删了，再重复上传一次。
 
-现在，我们来读一下源代码 `polls/views.py <https://github.com/pyexcel/django-excel/blob/master/polls/views.py#L79>`_
+现在，我们来读一下源代码
+`polls/views.py <https://github.com/pyexcel/django-excel/blob/master/polls/views.py#L79>`_
 请关注这部分代码：
 
 .. literalinclude:: ../../polls/views.py
    :lines: 72-92
 
 把上传的 excel 存入数据库的功臣是 :meth:`~django_excel.save_book_to_database`.
-函数变量 **models** 是 django model 数组； **initializers** 是与之对应的初始化函数。
+函数变量 **models** 是 Django model 数组； **initializers** 是与之对应的初始化函数。
 在代码中，你会注意到，作者没有给 Question 写初始化函数，所以就给了 None；但是把 `choice_func`
 给了 Choice。**mapdicts** 是一个用来控制数列栏名字的数组。 它的成员可以是一个数组，也
 可以是一个字典::
@@ -404,24 +409,26 @@ http://localhost:8000/polls/export/book，这次呢，一个下载对话框直�
 :meth:`~django_excel.make_response_from_tables` 其实做了所有的事情: 读取数据，
 把它们转换成 xls，再发给浏览器。做为开发人员，你需要给出要输出的表和 excel 文件类型。
 
-与此同时，你还可打开另外一个链接： http://localhost:8000/polls/export/sheet 。它会把 **Question**
-输出成一个单页的表格文件。
+与此同时，你还可打开另外一个链接： http://localhost:8000/polls/export/sheet 。
+它会把 **Question** 输出成一个单页的表格文件。
 
 
 直接把 excel 文件渲染成 excel 的样子
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-最开始已经出现了这个渲染的形式。首先呢，`handsontable 开发人员 <https://handsontable.com/>`_ 做了
+最开始已经出现了这个渲染的形式。首先呢，
+`handsontable 开发人员 <https://handsontable.com/>`_ 做了
 所有的工作。其次 `pyexcel-handsontable`_ 仅仅做了集成而已。 想要用这个的话，你需要自己装::
 
    $ pip install pyexcel-handsontable
 
-现在，我们看看这个是如何调用的。简单地说，就是把输出的文件后最写成: 'handsontable.html' 就可以了。
+现在，我们看看这个是如何调用的。简单地说，就是把输出的文件后最写成: 'handsontable.html' 
+就可以了。
 
 .. literalinclude:: ../../polls/views.py
    :lines: 153-155
 
-你可以把 handontable 文件嵌入 django 的模版里面。下面是所需的代码：
+你可以把 handontable 文件嵌入 Django 的模版里面。下面是所需的代码：
 
 .. literalinclude:: ../../polls/views.py
    :lines: 158-189
@@ -439,8 +446,9 @@ and http://localhost:8000/polls/embedded_handson_view_single/.
 
 前面讲了如何把一个多表格的 excel 文件里的数据输入数据库。 现在我们看看输入一个表格。
 打开这个链接：http://localhost:8000/polls/imports_sheet/, w
-这次上传 `sample-sheet.xls <https://github.com/pyexcel/django-excel/blob/master/sample-sheet.xls>`_
-然后 django 管理员界面可以查看是否有收到数据。
+这次上传
+`sample-sheet.xls <https://github.com/pyexcel/django-excel/blob/master/sample-sheet.xls>`_
+然后 Django 管理员界面可以查看是否有收到数据。
 
 下面我们来读代码：
 
@@ -448,7 +456,7 @@ and http://localhost:8000/polls/embedded_handson_view_single/.
    :lines: 104-116
 
 因为是单个表格，所以我们给一个 mapdict 参数并调用
-:meth:`~django_excel.ExcelMixin.save_to_database` 来存到一个 django 模型里。
+:meth:`~django_excel.ExcelMixin.save_to_database` 来存到一个 Django 模型里。
 
 看到了多了一个参数 'name_columns_by_row' 吗？为什么需要它？
 是这样的，一般来讲，如果你的表格的第一行是栏目名字呢，你就不需要它。 
@@ -474,15 +482,14 @@ and http://localhost:8000/polls/embedded_handson_view_single/.
    `这部分 pyexcel-io 的代码 <https://github.com/pyexcel/pyexcel-io/blob/master/pyexcel_io/djangobook.py#L98>`_,
    和 `django-excel 问题 2 <https://github.com/pyexcel/django-excel/issues/2>`_
 
-   为了除去这个警告呢，你需要在 django 的管理员界面清空所有数据。然后再试一下。
+   为了除去这个警告呢，你需要在 Django 的管理员界面清空所有数据。然后再试一下。
 
 
 如果 excel 数据里有一些与数据库数据重叠了，怎么办？
 ********************************************************************************
 
 你可以提供自己的一个初始化函数。这个数在遇到重叠的数据的时候，返回 None 这样 django-excel 
-就会跳过当前的一行数据。
-当然，在初始化函数里，你也可以更新数据库。最重要的是，只有你的初始化函数返回 None，
+就会跳过当前的一行数据。当然，在初始化函数里，你也可以更新数据库。最重要的是，只有你的初始化函数返回 None，
 django-excel 会尽量用批量输入，而不是一个一个输入数据库。
 
 
@@ -503,7 +510,7 @@ django-excel 会尽量用批量输入，而不是一个一个输入数据库。
 渲染你的数据
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-为了渲染数据，我们先去 django 的管理员界面，增加一些投票。
+为了渲染数据，我们先去 Django 的管理员界面，增加一些投票。
 
 .. image:: admin-vote.png
 
@@ -572,47 +579,47 @@ a little bit more time in coding, documentation and writing interesting posts.
 函数参考
 ---------------
 
-**django-excel** attaches **pyexcel** functions to **InMemoryUploadedFile** and **TemporaryUploadedFile**. Hence, the following functions are available for the uploaded files, e.g. request.FILES['your_uploaded_file'].
+**django-excel** 把 **pyexcel** 的函数嫁接到了 **InMemoryUploadedFile** 和 **TemporaryUploadedFile**。所以，以下的函数
+都会出现在上载文件的实例里： request.FILES['your_uploaded_file'] 。
 
 .. module:: django_excel.ExcelMixin
 
 .. method:: get_sheet(sheet_name=None, **keywords)
 
-   :param sheet_name: For an excel book, there could be multiple sheets. If it is left
-                      unspecified, the sheet at index 0 is loaded. For 'csv', 'tsv' file,
-                      *sheet_name* should be None anyway.
-   :param keywords: additional keywords to :meth:`pyexcel.get_sheet`
-   :returns: A sheet object
+   :param sheet_name: 对于多个表单的 excel 文件，它可以用来指定从哪一个表单取数据。缺省值是第一个表单。
+                      要是 csv , tsv 文件的话，可以忽略 *sheet_name* 。
+   :param keywords: 其他 :meth:`pyexcel.get_sheet` 的参数
+   :returns: :class:`pyexcel.Sheet`
 
 .. method:: get_array(sheet_name=None, **keywords)
 
-   :param sheet_name: same as :meth:`~django_excel.ExcelMixin.get_sheet`
-   :param keywords: additional keywords to pyexcel library
-   :returns: a two dimensional array, a list of lists
+   :param sheet_name: 和前面 :meth:`~django_excel.ExcelMixin.get_sheet` 一样。
+   :param keywords: 其他 :meth:`pyexcel.get_array` 的参数
+   :returns: 二维数组（a list of lists）
 
 .. method:: iget_array(sheet_name=None, **keywords)
 
-   :param sheet_name: same as :meth:`~django_excel.ExcelMixin.get_sheet`
-   :param keywords: additional keywords to pyexcel library
-   :returns: a generator for a two dimensional array, a list of lists
+   :param sheet_name: 和前面 :meth:`~django_excel.ExcelMixin.get_sheet` 一样。
+   :param keywords: 其他 :meth:`pyexcel.iget_array` 的参数
+   :returns: 数组产生器
 
 .. method:: get_dict(sheet_name=None, name_columns_by_row=0, **keywords)
 
-   :param sheet_name: same as :meth:`~django_excel.ExcelMixin.get_sheet`
+   :param sheet_name: 和前面 :meth:`~django_excel.ExcelMixin.get_sheet` 一样。
    :param name_columns_by_row: uses the first row of the sheet to be column headers by default.
    :param keywords: additional keywords to pyexcel library
    :returns: a dictionary of the file content
 
 .. method:: get_records(sheet_name=None, name_columns_by_row=0, **keywords)
 
-   :param sheet_name: same as :meth:`~django_excel.ExcelMixin.get_sheet`
+   :param sheet_name: 和前面 :meth:`~django_excel.ExcelMixin.get_sheet` 一样。
    :param name_columns_by_row: uses the first row of the sheet to be record field names by default.
    :param keywords: additional keywords to pyexcel library
    :returns: a list of dictionary of the file content
 
 .. method:: iget_records(sheet_name=None, name_columns_by_row=0, **keywords)
 
-   :param sheet_name: same as :meth:`~django_excel.ExcelMixin.get_sheet`
+   :param sheet_name: 和前面 :meth:`~django_excel.ExcelMixin.get_sheet` 一样。
    :param name_columns_by_row: uses the first row of the sheet to be record field names by default.
    :param keywords: additional keywords to pyexcel library
    :returns: a generator for a list of dictionary of the file content
