@@ -561,19 +561,9 @@ django-excel 会尽量用批量输入，而不是一个一个输入数据库。
 支持
 -----------------------
 
-If your company has embedded pyexcel and its components into a revenue generating
-product, please support me on github, `patreon <https://www.patreon.com/bePatron?u=5537627>`_
-or `bounty source <https://salt.bountysource.com/teams/chfw-pyexcel>`_ to maintain
-the project and develop it further.
+如果您觉得作者的付出对您有帮助，您可以给作者小女儿送个小玩具。谢谢您的支持！
 
-If you are an individual, you are welcome to support me too and for however long
-you feel like. As my backer, you will receive
-`early access to pyexcel related contents <https://www.patreon.com/pyexcel/posts>`_.
-
-And your issues will get prioritized if you would like to become my patreon as `pyexcel pro user`.
-
-With your financial support, I will be able to invest
-a little bit more time in coding, documentation and writing interesting posts.
+.. image:: https://user-images.githubusercontent.com/4280312/98422397-70c9a580-2083-11eb-969b-8c1b792a86d4.png
 
 
 函数参考
