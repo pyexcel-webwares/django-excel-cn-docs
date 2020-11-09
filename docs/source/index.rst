@@ -563,8 +563,12 @@ django-excel 会尽量用批量输入，而不是一个一个输入数据库。
 
 如果您觉得作者的付出对您有帮助，您可以给作者小女儿送个小玩具。谢谢您的支持！
 
-.. image:: https://user-images.githubusercontent.com/4280312/98422397-70c9a580-2083-11eb-969b-8c1b792a86d4.png
+.. image:: https://user-images.githubusercontent.com/4280312/98528713-979afe00-2274-11eb-9a98-8b3d75a83be2.png
    :width: 200
+
+.. image:: https://user-images.githubusercontent.com/4280312/98529289-56efb480-2275-11eb-940f-be9f01ce0728.png
+   :width: 200
+
 函数参考
 ---------------
 
@@ -595,21 +599,21 @@ django-excel 会尽量用批量输入，而不是一个一个输入数据库。
 .. method:: get_dict(sheet_name=None, name_columns_by_row=0, **keywords)
 
    :param sheet_name: 和前面 :meth:`~django_excel.ExcelMixin.get_sheet` 一样。
-   :param name_columns_by_row: uses the first row of the sheet to be column headers by default.
-   :param keywords: additional keywords to pyexcel library
+   :param name_columns_by_row: 栏目名在哪一样。缺省的话，默认栏目在第一行。
+   :param keywords: 其他 :meth:`pyexcel.get_dict` 的参数
    :returns: 字典
 
 .. method:: get_records(sheet_name=None, name_columns_by_row=0, **keywords)
 
    :param sheet_name: 和前面 :meth:`~django_excel.ExcelMixin.get_sheet` 一样。
-   :param name_columns_by_row: uses the first row of the sheet to be record field names by default.
+   :param name_columns_by_row: 栏目名在哪一样。缺省的话，默认栏目在第一行。
    :param keywords: 其他 :meth:`pyexcel.get_records` 的参数
    :returns: 字典列表 (a list of records)
 
 .. method:: iget_records(sheet_name=None, name_columns_by_row=0, **keywords)
 
    :param sheet_name: 和前面 :meth:`~django_excel.ExcelMixin.get_sheet` 一样。
-   :param name_columns_by_row: uses the first row of the sheet to be record field names by default.
+   :param name_columns_by_row: 栏目名在哪一样。缺省的话，默认栏目在第一行。
    :param keywords: 其他 :meth:`pyexcel.iget_records` 的参数
    :returns: 字典产生器（a generator for records）
 
