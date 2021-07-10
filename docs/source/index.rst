@@ -561,14 +561,10 @@ django-excel 会尽量用批量输入，而不是一个一个输入数据库。
 支持
 -----------------------
 
-.. image:: https://user-images.githubusercontent.com/4280312/125166536-fc0bb580-e193-11eb-89fa-ee307e523c68.jpeg
 
 如果您觉得作者的付出对您有帮助，您可以给作者小女儿送个小玩具。谢谢您的支持！
 
-.. image:: https://user-images.githubusercontent.com/4280312/98528713-979afe00-2274-11eb-9a98-8b3d75a83be2.png
-   :width: 200
-
-.. image:: https://user-images.githubusercontent.com/4280312/98529289-56efb480-2275-11eb-940f-be9f01ce0728.png
+.. .. image:: https://user-images.githubusercontent.com/4280312/125166536-fc0bb580-e193-11eb-89fa-ee307e523c68.jpeg
    :width: 200
 
 函数参考
